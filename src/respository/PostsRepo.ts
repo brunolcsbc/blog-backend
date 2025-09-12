@@ -1,5 +1,5 @@
-import { InstancePrisma } from "../../config/prisma/PrismaSingleton";
-import { posts } from "../../config/prisma/generated/prisma";
+import { InstancePrisma } from "../../prisma/PrismaSingleton";
+import { posts } from "../../prisma/generated/prisma";
 
 export class PostsRepo {
     private readonly prismaModel = InstancePrisma.getInstance().posts

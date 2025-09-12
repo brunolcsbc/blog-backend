@@ -1,5 +1,5 @@
-import { InstancePrisma } from "../../config/prisma/PrismaSingleton";
-import { usuarios } from "../../config/prisma/generated/prisma";
+import { InstancePrisma } from "../../prisma/PrismaSingleton";
+import { usuarios } from "../../prisma/generated/prisma";
 
 export class UserRepo {
     private readonly prismaModel = InstancePrisma.getInstance().usuarios

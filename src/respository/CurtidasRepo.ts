@@ -1,5 +1,5 @@
-import { InstancePrisma } from "../../config/prisma/PrismaSingleton";
-import { curtidas } from "../../config/prisma/generated/prisma";
+import { InstancePrisma } from "../../prisma/PrismaSingleton";
+import { curtidas } from "../../prisma/generated/prisma";
 
 export class CurtidaRepo {
     private readonly prismaModel = InstancePrisma.getInstance().curtidas
