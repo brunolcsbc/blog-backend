@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model curtidas {
+  idusuario Int
+  idpost    Int
+  usuarios  usuarios @relation(fields: [idusuario], references: [idusuario], onDelete: SetNull, onUpdate: NoAction, map: "fk_curtidas_1")
+  posts     posts    @relation(fields: [idpost], references: [idpost], onDelete: SetNull, onUpdate: NoAction, map: "fk_curtidas_2")
+
+  @@id([idusuario, idpost])
+}
+
+model posts {
+  idpost       Int        @id @default(autoincrement())
+  titulo       String     @db.VarChar
+  conteudo     String
+  data_criacao DateTime   @default(dbgenerated("CURRENT_DATE")) @db.Date
+  idusuario    Int        @default(autoincrement())
+  curtidas     curtidas[]
+  usuarios     usuarios   @relation(fields: [idusuario], references: [idusuario], onDelete: Cascade, onUpdate: NoAction, map: "fk_posts_2")
+}
+
+model usuarios {
+  idusuario     Int        @id @default(autoincrement())
+  nome          String     @db.VarChar
+  sobrenome     String     @db.VarChar
+  email         String     @unique @db.VarChar
+  biografia     String?
+  avatar_url    String?    @db.VarChar
+  senha         String     @db.VarChar
+  data_registro DateTime   @default(dbgenerated("CURRENT_DATE")) @db.Date
+  curtidas      curtidas[]
+  posts         posts[]
+}
