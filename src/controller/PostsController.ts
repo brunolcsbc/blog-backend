@@ -53,7 +53,8 @@ export class PostsController {
 
             const totalRecords = await this.repo.countAll();
             const paginate = f_paginate( pageNumber, perPageNumber, totalRecords );
-            const data = await this.repo.getAll(paginate.perPage, paginate.from);
+            const data = await this.repo.getAll(paginate.perPage, paginate.from, (req as any).user.idusuario);
+            console.log(data)
             res.json(new SuccessResponse(data, paginate));
         } catch(err) {
             next(err)

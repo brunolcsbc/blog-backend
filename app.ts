@@ -7,18 +7,21 @@ import morgan from 'morgan';
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}));
 app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
 app.use(express.json());
 app.use('/static', express.static('public'));
 app.use(morgan("dev"));
 
 // Verifica autenticação
-// import { isAuthenticate } from './middlewares/isAuthenticate';
-// app.use(isAuthenticate(({
-//     excludedPaths: [ "/login", "/users" ],
-//     excludedMethods: [ "get", "post" ]
-// })));
+import { isAuthenticate } from './middlewares/isAuthenticate';
+app.use(isAuthenticate(({
+    excludedPaths: [ "/login", "/users" ],
+    excludedMethods: [ "get", "post" ]
+})));
 
 // Importando rotas
 import RouterPost from './src/routes/posts';

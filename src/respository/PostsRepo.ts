@@ -41,7 +41,7 @@ export class PostsRepo {
         })
     }
 
-    public async getAll(limit: number, offset: number) {
+    public async getAll(limit: number, offset: number, idusuario: number) {
         return await this.prismaModel.findMany({
             take: limit,
             skip: offset,
@@ -56,7 +56,13 @@ export class PostsRepo {
                 },
                 _count: {
                     select: { curtidas: true }
-                }
+                },
+                curtidas: {
+                    where: {
+                        idusuario: idusuario,
+                    },
+                    select: { idusuario: true },
+                },
             }
         })
     }

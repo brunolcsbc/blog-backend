@@ -5,8 +5,8 @@ const router = Router();
 const controller: PostsController = new PostsController();
 
 router.post('/', controller.createPost.bind(controller));
-router.get('/all', controller.getAllPosts.bind(controller));
 router.get('/all/byuser/:iduser', controller.getAllPostsByUser.bind(controller));
+router.get('/all', controller.getAllPosts.bind(controller));
 router.get('/searchcontent', controller.getPostsBySearchContent.bind(controller));
 router.get('/searchtitle', controller.getPostsBySearchTitle.bind(controller));
 router.get('/search/likedbyuser/:iduser', controller.getPostsLikedByUser.bind(controller));

@@ -12,16 +12,15 @@ export class CurtidasController {
 
     public async updateLikes(req: Request, res: Response, next: NextFunction) {
         try {
-            const idPost = idSchema.parse( req.params.idPost )
-            const idUser = idSchema.parse( req.params.idUser );
-
+            const idPost = idSchema.parse( req.params.idpost );
+            const idUser = (req as any).user.idusuario;
             const exists = await this.repo.getCurtida(idPost, idUser);
             if(exists) {
                 await this.repo.delete( idPost, idUser );
             } else {
                 await this.repo.create( idPost, idUser );
             }
-            res.json(new SuccessResponse({ data: "ok" }))
+            res.json(new SuccessResponse( exists ? "down" : "up"))
         } catch (err) {
             next(err)
         }
