@@ -5,21 +5,29 @@ import cors from 'cors';
 import 'dotenv/config';
 import morgan from 'morgan';
 const app = express();
+import * as path from 'path';
+
+const port = process.env.PORT || 3001;
 
 app.use(helmet());
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "*",
     credentials: true
 }));
 app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
 app.use(express.json());
-app.use('/static', express.static('public'));
+// Servir arquivos estáticos com CORS
+app.use('/static', express.static(path.join(__dirname, 'public'), {
+    setHeaders: (res, path) => {
+        res.set('Access-Control-Allow-Origin', '*');
+    }
+}));
 app.use(morgan("dev"));
 
 // Verifica autenticação
 import { isAuthenticate } from './middlewares/isAuthenticate';
 app.use(isAuthenticate(({
-    excludedPaths: [ "/login", "/users" ],
+    excludedPaths: [ "/login", "/users", "/static" ],
     excludedMethods: [ "get", "post" ]
 })));
 
@@ -37,6 +45,6 @@ app.use('/', RouterLogin);
 import { errorHandler } from './middlewares/errorHandler';
 app.use(errorHandler)
 
-app.listen(process.env.PORT || 3001, () => {
-    console.log(`Servidor rodando.`)
+app.listen(port, () => {
+    console.log(`Servidor rodando na porta ${port}.`)
 })

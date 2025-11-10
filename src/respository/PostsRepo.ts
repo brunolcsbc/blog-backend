@@ -62,7 +62,7 @@ export class PostsRepo {
                         idusuario: idusuario,
                     },
                     select: { idusuario: true },
-                },
+                }
             }
         })
     }
@@ -71,11 +71,23 @@ export class PostsRepo {
         return await this.prismaModel.count();
     }
 
-    public async getPostsByUser(idUser: number): Promise<posts[]> {
+    public async getPostsByUser(idUser: number) {
         return await this.prismaModel.findMany({ 
             where: { idusuario: idUser },
             include: {
-                _count: { select: { curtidas: true} }
+                _count: { select: { curtidas: true} },
+                usuarios: {
+                    select: {
+                        nome: true,
+                        sobrenome: true
+                    }
+                },
+                curtidas: {
+                    where: {
+                        idusuario: idUser,
+                    },
+                    select: { idusuario: true },
+                }
             }
         })
     }
@@ -100,7 +112,7 @@ export class PostsRepo {
         })
     }
 
-    public async getPostsByContent(value: string) {                            
+    public async getPostsByContent(value: string, idUser: number) {                            
         return await this.prismaModel.findMany({
             where: {
                 conteudo: {
@@ -108,13 +120,18 @@ export class PostsRepo {
                 }
             },
             include: {
+                _count: { select: { curtidas: true} },
                 usuarios: {
                     select: {
                         nome: true,
-                        sobrenome: true,
-                        email: true,
-                        avatar_url: true
+                        sobrenome: true
                     }
+                },
+                curtidas: {
+                    where: {
+                        idusuario: idUser,
+                    },
+                    select: { idusuario: true },
                 }
             }
         })

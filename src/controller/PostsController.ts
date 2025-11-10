@@ -12,7 +12,7 @@ export class PostsController {
 
     public async createPost(req: Request, res: Response, next: NextFunction) {
         try {
-            const data = postSchema.parse(req.body);
+            const data = postSchema.parse({...req.body, idusuario: (req as any).user.idusuario });
             const posts = await this.repo.create(data);
             res.json(new SuccessResponse(posts));
         } catch(err) {
@@ -54,7 +54,6 @@ export class PostsController {
             const totalRecords = await this.repo.countAll();
             const paginate = f_paginate( pageNumber, perPageNumber, totalRecords );
             const data = await this.repo.getAll(paginate.perPage, paginate.from, (req as any).user.idusuario);
-            console.log(data)
             res.json(new SuccessResponse(data, paginate));
         } catch(err) {
             next(err)
@@ -83,7 +82,8 @@ export class PostsController {
     public async getPostsBySearchContent(req: Request, res: Response, next: NextFunction) {
         try {
             const params = stringSearch.parse(req.query.content);
-            const data = await this.repo.getPostsByContent(params);
+            const idUser = idSchema.parse(req.query.id);
+            let data = await this.repo.getPostsByContent(params, idUser);
             res.json(new SuccessResponse(data));
         } catch (err) {
             next(err)

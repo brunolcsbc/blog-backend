@@ -38,4 +38,16 @@ export class CurtidaRepo {
         })
     }
 
+    public async getAll(idPost: number, idUsuario: number) {
+        return await this.prismaModel.findMany({
+            where: {
+                idpost: idPost,
+                idusuario: idUsuario
+            },
+            include: {
+                
+            }
+        })
+    }
+
 }
