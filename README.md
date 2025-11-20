@@ -14,7 +14,5 @@ Todas as funções solicitadas pelo professor foram implementadas no backend.
 
 A dificuldade que encontrei é na organização da aplicação para que fique compreensível e escalável no futuro. Eu dividi as tarefas do controller com o repository com o objetivo de organizar melhor o código. Assim, o controller fica mais conciso, com código mais enxuto e visualmente mais intuitivo. Além disso, caso eu decida alterar o banco de dados, basta alterar apenas o repository com a lógica do novo banco.
 
-Iniciei o desenvolvimento do frontend utilizando o nextjs com as principais funções solicitadas pelo professor. Porém ainda está incompleto.
-
 Repositório frontend: https://github.com/brunolcsbc/blog-frontend 
 
