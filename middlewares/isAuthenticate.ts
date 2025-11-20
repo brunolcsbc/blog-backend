@@ -23,7 +23,7 @@ export function isAuthenticate(options: Options = {}) {
         if (!token) throw new UnauthorizedError("É necessário estar logado");
 
         jwt.verify(token, process.env.JWT_ACCESS_SECRET as string, (err, user) => {
-            if (err) throw new ForbiddenError("Token inválido ou expirado");
+            if (err) throw new UnauthorizedError("Token inválido ou expirado");
             (req as any).user = user;
         next();
         });

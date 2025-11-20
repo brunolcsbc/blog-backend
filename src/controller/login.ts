@@ -19,7 +19,7 @@ export class LoginController {
         const isPasswordValid: boolean = bcrypt.compareSync(senha, user.senha);
         if (!isPasswordValid) throw new UnauthorizedError("Email ou senha inválidos");
 
-        const accessToken: string = jwt.sign({ idusuario: user.idusuario }, process.env.JWT_ACCESS_SECRET as string, { expiresIn: "8h" });
+        const accessToken: string = jwt.sign({ idusuario: user.idusuario }, process.env.JWT_ACCESS_SECRET as string, { expiresIn: "1m" });
         const refreshToken: string = jwt.sign({ idusuario: user.idusuario }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: "8h" });
         
         res.cookie("token", refreshToken, { 

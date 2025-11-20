@@ -81,8 +81,10 @@ export class PostsController {
     }
     public async getPostsBySearchContent(req: Request, res: Response, next: NextFunction) {
         try {
-            const params = stringSearch.parse(req.query.content);
-            const idUser = idSchema.parse(req.query.id);
+            const params = req.query.content as string;
+            if(!params) return res.json(new SuccessResponse([]));
+
+            const idUser = (req as any).user.idusuario;
             let data = await this.repo.getPostsByContent(params, idUser);
             res.json(new SuccessResponse(data));
         } catch (err) {
@@ -91,8 +93,11 @@ export class PostsController {
     }
     public async getPostsBySearchTitle(req: Request, res: Response, next: NextFunction) {
         try {
-            const params = stringSearch.parse(req.query.title);
-            const data = await this.repo.getPostsByTitle(params);
+            const params = req.query.title as string;
+            if(!params) return res.json(new SuccessResponse([]));
+
+            const idUser = (req as any).user.idusuario;
+            let data = await this.repo.getPostsByTitle(params, idUser);
             res.json(new SuccessResponse(data));
         } catch (err) {
             next(err)

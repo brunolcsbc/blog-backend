@@ -9,19 +9,16 @@ import * as path from 'path';
 
 const port = process.env.PORT || 3001;
 
-app.use(helmet());
+app.use(helmet({}));
 app.use(cors({
-    origin: "*",
-    credentials: true
+    origin: "http://localhost:3001",
+    credentials: true,
 }));
 app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
 app.use(express.json());
+
 // Servir arquivos estáticos com CORS
-app.use('/static', express.static(path.join(__dirname, 'public'), {
-    setHeaders: (res, path) => {
-        res.set('Access-Control-Allow-Origin', '*');
-    }
-}));
+app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use(morgan("dev"));
 
 // Verifica autenticação

@@ -92,7 +92,7 @@ export class PostsRepo {
         })
     }
 
-    public async getPostsByTitle(value: string) {                            
+    public async getPostsByTitle(value: string, idUser: number) {                      
         return await this.prismaModel.findMany({
             where: {
                 titulo: {
@@ -100,13 +100,19 @@ export class PostsRepo {
                 }
             },
             include: {
+                _count: { select: { curtidas: true} },
                 usuarios: {
                     select: {
                         nome: true,
                         sobrenome: true,
-                        email: true,
-                        avatar_url: true
+                        avatar_url: true,
                     }
+                },
+                curtidas: {
+                    where: {
+                        idusuario: idUser,
+                    },
+                    select: { idusuario: true },
                 }
             }
         })
@@ -124,7 +130,8 @@ export class PostsRepo {
                 usuarios: {
                     select: {
                         nome: true,
-                        sobrenome: true
+                        sobrenome: true,
+                        avatar_url: true
                     }
                 },
                 curtidas: {
